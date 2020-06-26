@@ -28,10 +28,8 @@ udp_rx_callback(struct simple_udp_connection *c,
          const uint8_t *data,
          uint16_t datalen)
 {
-//  LOG_INFO("Received request '%.*s' from ", datalen, (char *) data);
-//  LOG_INFO_6ADDR(sender_addr);
   LOG_INFO_("\n"); 
-
+  
   LOG_INFO("I received a %d", *data);
   /* TODO: receive/poll for value from temperature sensor */
   if (*data < 20) {
@@ -48,7 +46,6 @@ udp_rx_callback(struct simple_udp_connection *c,
 	  }
   } 
 
-  /* TODO: implement (simple) thermostat logic */
 }
 /*---------------------------------------------------------------------------*/
 PROCESS_THREAD(thermostat_process, ev, data)

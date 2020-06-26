@@ -30,14 +30,18 @@ udp_rx_callback(struct simple_udp_connection *c,
          const uint8_t *data,
          uint16_t datalen)
 {
-  leds_toggle(LEDS_GREEN);
-  if (i == 1) {
-	  LOG_INFO("Light turned on\n");
-	  i=0;
-  } else {
-	  LOG_INFO("Light turned off\n");
-	  i=1;
-  }
+
+	if(*data == '1') {
+		leds_toggle(LEDS_GREEN);
+		if (i == 1) {
+			LOG_INFO("Light turned on\n");
+			i=0;
+		} else {
+			LOG_INFO("Light turned off\n");
+			i=1;
+		}
+	}
+
 }
 /*---------------------------------------------------------------------------*/
 PROCESS_THREAD(light_actuator_process, ev, data)

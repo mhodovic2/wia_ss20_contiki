@@ -23,7 +23,6 @@ PROCESS_THREAD(temperature_sensor_process, ev, data)
 {
   static struct etimer timer;
   static unsigned count[10] = {16, 19, 21, 24, 25, 20, 14, 15, 17, 21};
-  static char str[32];
   uip_ip6addr_t dest_ipaddr;
   uiplib_ipaddrconv("fd00::c30c:0:0:2", &dest_ipaddr);
 
@@ -37,15 +36,12 @@ PROCESS_THREAD(temperature_sensor_process, ev, data)
   etimer_set(&timer, CLOCK_SECOND * 30);
 
   while(1) {
-    /* TODO: Send message to thermostat */
-    /* prefferably send semi-reasonable randomly fluctuating values */
     if(NETSTACK_ROUTING.node_is_reachable()) {
       /* Send to destination ip */
       LOG_INFO("Sending request %u to ", count[i]);
       LOG_INFO_6ADDR(&dest_ipaddr);
       LOG_INFO_("\n");
 
-      snprintf(str, sizeof(str), "%d", count[i]);
       simple_udp_sendto(&udp_conn, &count[i], sizeof(count), &dest_ipaddr);
       if(i == 9) {
 	      i=0;

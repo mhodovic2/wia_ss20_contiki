@@ -22,7 +22,7 @@ AUTOSTART_PROCESSES(&light_switch_process);
 PROCESS_THREAD(light_switch_process, ev, data)
 {
   static char str[32];
-  static unsigned count;
+  static unsigned count = 1;
   uip_ip6addr_t dest_ipaddr;
   uiplib_ipaddrconv("fd00::c30c:0:0:5", &dest_ipaddr);
 
@@ -38,7 +38,7 @@ PROCESS_THREAD(light_switch_process, ev, data)
 	PROCESS_WAIT_EVENT_UNTIL((ev==sensors_event) && (data == &button_sensor));
    
 	if (NETSTACK_ROUTING.node_is_reachable()) {
-		LOG_INFO("Sending request %u to ", count);
+		LOG_INFO("%u", count);
 		LOG_INFO_6ADDR(&dest_ipaddr);
 		LOG_INFO("\n");
 		snprintf(str, sizeof(str), "%d", count);
